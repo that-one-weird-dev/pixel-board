@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.tools.Tool
+import com.zeropixel.pixelboard.ui.theme.Colors
 
 @Composable
 fun QuickBar(
@@ -33,21 +34,21 @@ fun QuickBar(
         modifier = Modifier
             .padding(10.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(Color(0xFF3b4252))
-            .border(1.dp, Color(0xff4c566a), shape = RoundedCornerShape(10.dp))
+            .background(Colors.Dark2)
+            .border(1.dp, Colors.Dark4, shape = RoundedCornerShape(10.dp))
             .padding(10.dp)
             .width(40.dp),
 
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         ColorPalette(currentColor, colorPalette, onColorPick)
-        Divider(color = Color(0xff4c566a), thickness = 2.dp)
+        Divider(color = Colors.Dark4, thickness = 2.dp)
         IconPalette(
             toolPalette,
             isSelected = { it == currentTool },
             onToolPick
         )
-        Divider(color = Color(0xff4c566a), thickness = 2.dp)
+        Divider(color = Colors.Dark4, thickness = 2.dp)
         IconPalette(actionPalette, onSelect = onActionPick)
     }
 }

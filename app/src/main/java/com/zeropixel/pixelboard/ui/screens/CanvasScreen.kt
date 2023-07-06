@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
 import com.zeropixel.pixelboard.ui.components.quickbar.QuickBar
+import com.zeropixel.pixelboard.ui.theme.Colors
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 @Composable
@@ -17,7 +17,7 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xff2e3440)),
+            .background(Colors.Dark1),
 
         contentAlignment = Alignment.Center,
     ) {
