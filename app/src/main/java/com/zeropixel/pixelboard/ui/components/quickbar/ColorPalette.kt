@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,15 +22,22 @@ fun ColorPalette(
     onColorPick: (Color) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .clip(RoundedCornerShape(10.dp)),
-
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        items(palette) { color ->
+        itemsIndexed(palette) { i, color ->
             val isSelected = color == currentColor
 
-            Color(isSelected, color) {
+            val shape = when (i) {
+                0 -> RoundedCornerShape(10.dp, 10.dp, 5.dp, 5.dp)
+                palette.size - 1 -> RoundedCornerShape(5.dp, 5.dp, 10.dp, 10.dp)
+                else -> RoundedCornerShape(5.dp)
+            }
+
+            Color(
+                Modifier.clip(shape),
+                isSelected,
+                color
+            ) {
                 onColorPick(color)
             }
         }
@@ -39,6 +46,7 @@ fun ColorPalette(
 
 @Composable
 private fun Color(
+    modifier: Modifier,
     isSelected: Boolean,
     color: Color,
     onClick: () -> Unit,
@@ -48,6 +56,7 @@ private fun Color(
     Box(
         modifier = Modifier
             .scale(scale)
+            .then(modifier)
             .aspectRatio(1f)
             .background(color)
             .clickable(onClick = onClick)
