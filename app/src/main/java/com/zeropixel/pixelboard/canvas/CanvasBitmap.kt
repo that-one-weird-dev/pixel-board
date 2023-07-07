@@ -12,10 +12,16 @@ class CanvasBitmap(
     val backgroundColor: Color = Color.Transparent
 ) {
 
-    private val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888, false).apply {
+    private val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888, false)
+
+    init {
+        clearPixels()
+    }
+
+    fun clearPixels() {
         repeat(width) { x ->
             repeat(height) { y ->
-                setPixel(x, y, backgroundColor.toArgb())
+                bitmap.setPixel(x, y, backgroundColor.toArgb())
             }
         }
     }

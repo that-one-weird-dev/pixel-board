@@ -10,11 +10,14 @@ import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
+import com.zeropixel.pixelboard.ui.components.menus.ConfirmMenuOptions
 
 class CanvasViewModel(
     width: Int = 32,
     height: Int = 32,
 ) : ViewModel() {
+
+    var confirmMenu by mutableStateOf<ConfirmMenuOptions?>(null)
 
     val canvasBitmap = CanvasBitmap(width, height)
     var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())

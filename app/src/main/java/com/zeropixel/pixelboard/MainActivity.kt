@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zeropixel.pixelboard.ui.screens.CanvasScreen
+import com.zeropixel.pixelboard.ui.screens.ConfirmMenuScreen
 import com.zeropixel.pixelboard.views.CanvasViewModel
 import com.zeropixel.pixelboard.views.CanvasViewModelFactory
 
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
                 viewModel<CanvasViewModel>(factory = CanvasViewModelFactory(32, 32))
 
             CanvasScreen(canvasViewModel)
+            ConfirmMenuScreen(canvasViewModel)
         }
     }
 }
