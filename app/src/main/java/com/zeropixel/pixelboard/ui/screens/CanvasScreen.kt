@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
+import com.zeropixel.pixelboard.ui.components.menus.ConfirmDialog
 import com.zeropixel.pixelboard.ui.components.quickbar.QuickBar
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
@@ -36,4 +37,10 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
             columns = 1,
         )
     }
+
+    ConfirmDialog(
+        visible = viewModel.isAlertShown,
+        options = viewModel.alertOptions,
+        onClose = { viewModel.hideAlertDialog() },
+    )
 }

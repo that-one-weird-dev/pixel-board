@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zeropixel.pixelboard.ui.screens.CanvasScreen
-import com.zeropixel.pixelboard.ui.screens.ConfirmMenuScreen
 import com.zeropixel.pixelboard.views.CanvasViewModel
 import com.zeropixel.pixelboard.views.CanvasViewModelFactory
 
@@ -30,7 +29,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     CanvasScreen(canvasViewModel)
-                    ConfirmMenuScreen(canvasViewModel)
                 }
             }
         }

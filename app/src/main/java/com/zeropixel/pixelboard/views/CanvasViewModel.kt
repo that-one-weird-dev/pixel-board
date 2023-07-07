@@ -10,14 +10,17 @@ import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
-import com.zeropixel.pixelboard.ui.components.menus.ConfirmMenuOptions
+import com.zeropixel.pixelboard.utils.AlertDialogOptions
 
 class CanvasViewModel(
     width: Int = 32,
     height: Int = 32,
 ) : ViewModel() {
 
-    var confirmMenu by mutableStateOf<ConfirmMenuOptions?>(null)
+    var isAlertShown by mutableStateOf(false)
+        private set
+    var alertOptions by mutableStateOf<AlertDialogOptions>(AlertDialogOptions("") {})
+        private set
 
     val canvasBitmap = CanvasBitmap(width, height)
     var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())
@@ -30,6 +33,15 @@ class CanvasViewModel(
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
     val actionPalette = listOf<Action>(ClearAction())
+
+    fun showAlertDialog(options: AlertDialogOptions) {
+        alertOptions = options
+        isAlertShown = true
+    }
+
+    fun hideAlertDialog() {
+        isAlertShown = false
+    }
 
     fun executeAction(action: Action) {
         with(action) {
