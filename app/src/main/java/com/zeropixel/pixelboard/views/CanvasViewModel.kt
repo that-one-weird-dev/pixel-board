@@ -17,8 +17,7 @@ class CanvasViewModel(
     height: Int = 32,
 ) : ViewModel() {
 
-    var isAlertShown by mutableStateOf(false)
-        private set
+    var showAlertDialog by mutableStateOf(false)
     var alertOptions by mutableStateOf<AlertDialogOptions>(AlertDialogOptions("") {})
         private set
 
@@ -36,11 +35,7 @@ class CanvasViewModel(
 
     fun showAlertDialog(options: AlertDialogOptions) {
         alertOptions = options
-        isAlertShown = true
-    }
-
-    fun hideAlertDialog() {
-        isAlertShown = false
+        showAlertDialog = true
     }
 
     fun executeAction(action: Action) {

@@ -39,8 +39,8 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
     }
 
     ConfirmDialog(
-        visible = viewModel.isAlertShown,
+        visible = viewModel.showAlertDialog,
         options = viewModel.alertOptions,
-        onClose = { viewModel.hideAlertDialog() },
+        onClose = { viewModel.showAlertDialog = false },
     )
 }
