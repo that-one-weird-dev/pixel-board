@@ -25,13 +25,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
@@ -49,6 +48,7 @@ fun PixelCanvas(
 ) {
     var scale by remember { mutableStateOf(DefaultScale) }
     var rotation by remember { mutableStateOf(0f) }
+    var panning by remember { mutableStateOf(Offset(0f, 0f)) }
 
     var coordinates: LayoutCoordinates? = null
     var lastDragPosition = Offset(0f, 0f)
@@ -78,17 +78,23 @@ fun PixelCanvas(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
-                detectTransformGestures(true) { _, _, zoom, rot ->
+                detectTransformGestures(true) { _, pan, zoom, rot ->
                     scale *= zoom
                     rotation += rot
+                    panning += pan
                 }
             }
     ) {
         Image(
             modifier = Modifier
                 .align(Alignment.Center)
-                .scale(maxOf(.5f, minOf(3f, scale)))
-                .rotate(rotation)
+                .graphicsLayer {
+                    translationX = panning.x
+                    translationY = panning.y
+                    scaleX = maxOf(.5f, minOf(3f, scale))
+                    scaleY = maxOf(.5f, minOf(3f, scale))
+                    rotationZ = rotation
+                }
                 .pointerInput(Unit) {
                     detectDragGestures(onDrag = ::onDrag, onDragStart = ::onDragStart)
                 }
@@ -108,11 +114,11 @@ fun PixelCanvas(
             contentDescription = "Canvas",
         )
 
-        val isRotated = rotation != 0f
+        val canReset = rotation != 0f
         AnimatedVisibility(
             modifier = Modifier
                 .align(Alignment.TopEnd),
-            visible = isRotated
+            visible = canReset
         ) {
             Box(
                 modifier = Modifier
