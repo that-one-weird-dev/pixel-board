@@ -8,14 +8,14 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -113,24 +113,29 @@ fun PixelCanvas(
         )
 
         val canReset = rotation != 0f
-        AnimatedVisibility(
-            modifier = Modifier
-                .align(Alignment.TopEnd),
-            visible = canReset
-        ) {
-            IconButton(
-                modifier = Modifier
-                    .padding(10.dp),
+        ResetButton(visible = canReset) {
+            rotation = 0f
+        }
+    }
+}
 
-                onClick = { rotation = 0f }
-            ) {
-                Icon(
-                    modifier = Modifier.size(50.dp),
-                    imageVector = Icons.Rounded.Refresh,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+@Composable
+fun BoxScope.ResetButton(
+    visible: Boolean,
+    onClick: () -> Unit,
+) {
+    AnimatedVisibility(
+        modifier = Modifier
+            .align(Alignment.TopEnd),
+        visible = visible,
+    ) {
+        FloatingActionButton(
+            modifier = Modifier
+                .padding(10.dp),
+
+            onClick = onClick,
+        ) {
+            Icon(imageVector = Icons.Rounded.Refresh, contentDescription = null)
         }
     }
 }
