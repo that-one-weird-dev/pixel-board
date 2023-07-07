@@ -8,10 +8,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.IconProvider
@@ -39,7 +39,7 @@ fun <T : IconProvider> IconPalette(
 }
 
 @Composable
-fun IconItem(
+private fun IconItem(
     isSelected: Boolean,
     icon: ImageVector,
     onClick: () -> Unit,
@@ -49,7 +49,7 @@ fun IconItem(
     Icon(
         icon,
         contentDescription = null,
-        tint = Color.White,
+        tint = MaterialTheme.colorScheme.onPrimaryContainer,
 
         modifier = Modifier
             .size(40.dp)

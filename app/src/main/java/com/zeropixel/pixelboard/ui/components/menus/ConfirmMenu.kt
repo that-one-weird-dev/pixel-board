@@ -1,25 +1,13 @@
 package com.zeropixel.pixelboard.ui.components.menus
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.zeropixel.pixelboard.ui.theme.Colors
 
 class ConfirmMenuOptions(
     val message: String,
@@ -29,53 +17,31 @@ class ConfirmMenuOptions(
 
 @Composable
 fun ConfirmMenu(message: String, onConfirm: () -> Unit, onCancel: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .clip(RoundedCornerShape(10.dp))
-            .border(1.dp, color = Colors.Dark4, shape = RoundedCornerShape(10.dp))
-            .background(Colors.Dark2)
-            .padding(20.dp)
-            .width(IntrinsicSize.Max),
+    AlertDialog(
 
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = message,
-            textAlign = TextAlign.Center,
-            color = Colors.White1,
-            fontSize = 20.sp,
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+        confirmButton = {
             Button(
-                onClick = onCancel,
-
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Colors.Dark4,
-                    contentColor = Colors.White1,
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text(text = "Cancel")
-            }
-            Button(
-                onClick = onConfirm,
-
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Colors.Dark4,
-                    contentColor = Colors.White1,
-                ),
-                shape = RoundedCornerShape(10.dp)
+                onClick = onConfirm, shape = RoundedCornerShape(10.dp)
             ) {
                 Text(text = "Confirm")
             }
-        }
-    }
+        },
+        dismissButton = {
+            Button(
+                onClick = onCancel, shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(text = "Cancel")
+            }
+        },
+
+        text = {
+            Text(
+                text = message,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        },
+
+        onDismissRequest = onCancel,
+    )
 }
