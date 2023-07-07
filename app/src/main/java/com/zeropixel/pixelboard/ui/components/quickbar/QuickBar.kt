@@ -29,7 +29,13 @@ fun QuickBar(
 
     actionPalette: List<Action>,
     onActionPick: (Action) -> Unit,
+
+    columns: Int = 1,
 ) {
+    val columnWidth = 40
+    val spacing = 5
+    val width = (columns * columnWidth + (columns - 1) * spacing).dp
+
     Column(
         modifier = Modifier
             .padding(10.dp)
@@ -37,18 +43,19 @@ fun QuickBar(
             .background(Colors.Dark2)
             .border(1.dp, Colors.Dark4, shape = RoundedCornerShape(10.dp))
             .padding(10.dp)
-            .width(40.dp),
+            .width(width),
 
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        ColorPalette(currentColor, colorPalette, onColorPick)
+        ColorPalette(currentColor, colorPalette, onColorPick, columns = columns)
         Divider(color = Colors.Dark4, thickness = 2.dp)
         IconPalette(
             toolPalette,
             isSelected = { it == currentTool },
-            onToolPick
+            onToolPick,
+            columns = columns,
         )
         Divider(color = Colors.Dark4, thickness = 2.dp)
-        IconPalette(actionPalette, onSelect = onActionPick)
+        IconPalette(actionPalette, onSelect = onActionPick, columns = columns)
     }
 }

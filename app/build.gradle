@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.zeropixel.pixelboard'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.zeropixel.pixelboard"
         minSdk 29
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -37,7 +37,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.7'
+        kotlinCompilerExtensionVersion '1.4.8'
     }
     packagingOptions {
         resources {

@@ -39,6 +39,8 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
 
                 actionPalette = viewModel.actionPalette,
                 onActionPick = { viewModel.executeAction(it) },
+
+                columns = 2,
             )
         }
     }

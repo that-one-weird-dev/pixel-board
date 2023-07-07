@@ -5,8 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,18 +22,29 @@ fun ColorPalette(
     currentColor: Color,
     palette: List<Color>,
     onColorPick: (Color) -> Unit,
+
+    columns: Int,
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(columns),
+
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         itemsIndexed(palette) { i, color ->
             val isSelected = color == currentColor
 
-            val shape = when (i) {
-                0 -> RoundedCornerShape(10.dp, 10.dp, 5.dp, 5.dp)
-                palette.size - 1 -> RoundedCornerShape(5.dp, 5.dp, 10.dp, 10.dp)
-                else -> RoundedCornerShape(5.dp)
-            }
+            val topLeftCorner = if (i == 0) 10.dp else 5.dp
+            val topRightCorner = if (i == columns - 1) 10.dp else 5.dp
+            val bottomLeftCorner = if (i == palette.size - 1 - (columns - 1)) 10.dp else 5.dp
+            val bottomRightCorner = if (i == palette.size - 1) 10.dp else 5.dp
+
+            val shape = RoundedCornerShape(
+                topLeftCorner,
+                topRightCorner,
+                bottomRightCorner,
+                bottomLeftCorner,
+            )
 
             Color(
                 Modifier.clip(shape),
@@ -55,6 +68,7 @@ private fun Color(
 
     Box(
         modifier = Modifier
+            .size(40.dp)
             .scale(scale)
             .then(modifier)
             .aspectRatio(1f)
