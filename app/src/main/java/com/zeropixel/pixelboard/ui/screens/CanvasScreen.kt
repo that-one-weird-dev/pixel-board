@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
 import com.zeropixel.pixelboard.ui.components.menus.ConfirmDialog
 import com.zeropixel.pixelboard.ui.components.quickbar.QuickBar
+import com.zeropixel.pixelboard.ui.components.toolconfig.ToolConfiguration
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 @Composable
@@ -36,6 +37,13 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
 
             columns = 1,
         )
+
+        viewModel.currentTool.configuration?.let {
+            ToolConfiguration(
+                modifier = Modifier.align(Alignment.TopStart),
+                configuration = it,
+            )
+        }
     }
 
     ConfirmDialog(

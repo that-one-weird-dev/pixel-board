@@ -21,12 +21,22 @@ class CanvasBitmap(
     fun clearPixels() {
         repeat(width) { x ->
             repeat(height) { y ->
-                bitmap.setPixel(x, y, backgroundColor.toArgb())
+                drawPixel(x, y, backgroundColor)
+            }
+        }
+    }
+
+    fun drawCircle(x: Int, y: Int, radius: Int, color: Color) {
+        for (drawX in (x - radius)..(x + radius)) {
+            for (drawY in (y - radius)..(y + radius)) {
+                drawPixel(drawX, drawY, color)
             }
         }
     }
 
     fun drawPixel(x: Int, y: Int, color: Color) {
+        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return
+
         bitmap.setPixel(x, y, color.toArgb())
     }
 
