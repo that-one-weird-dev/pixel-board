@@ -1,4 +1,4 @@
-package com.zeropixel.pixelboard.ui.components.toolconfig
+package com.zeropixel.pixelboard.ui.components.toolbar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

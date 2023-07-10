@@ -5,7 +5,7 @@ import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.zeropixel.pixelboard.ui.components.toolconfig.ToolConfigSlider
+import com.zeropixel.pixelboard.ui.components.toolbar.ToolConfigSlider
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class PenTool : Tool {

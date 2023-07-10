@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.zeropixel.pixelboard.R
-import com.zeropixel.pixelboard.ui.components.toolconfig.ToolConfigSlider
+import com.zeropixel.pixelboard.ui.components.toolbar.ToolConfigSlider
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class EraserTool : Tool {

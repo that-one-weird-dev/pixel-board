@@ -1,4 +1,4 @@
-package com.zeropixel.pixelboard.ui.components.quickbar
+package com.zeropixel.pixelboard.ui.components.colorpalette
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ColorPalette(
+    modifier: Modifier = Modifier,
     currentColor: Color,
     palette: List<Color>,
     onColorPick: (Color) -> Unit,
@@ -26,6 +27,8 @@ fun ColorPalette(
     columns: Int,
 ) {
     LazyVerticalGrid(
+        modifier = modifier,
+
         columns = GridCells.Fixed(columns),
 
         verticalArrangement = Arrangement.spacedBy(5.dp),
