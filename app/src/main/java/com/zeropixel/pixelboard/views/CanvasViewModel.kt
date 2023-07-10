@@ -18,14 +18,14 @@ class CanvasViewModel(
 ) : ViewModel() {
 
     var showAlertDialog by mutableStateOf(false)
-    var alertOptions by mutableStateOf<AlertDialogOptions>(AlertDialogOptions("") {})
+    var alertOptions by mutableStateOf(AlertDialogOptions("") {})
         private set
 
     val canvasBitmap = CanvasBitmap(width, height)
     var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())
         private set
 
-    val colorPalette = listOf(Color.Black, Color.Red, Color.Green, Color.Blue)
+    val colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
 
     val toolPalette = listOf(PenTool(), EraserTool())
@@ -53,4 +53,6 @@ class CanvasViewModel(
 
         imageBitmap = canvasBitmap.asImageBitmap()
     }
+
+    fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 6 + 1
 }

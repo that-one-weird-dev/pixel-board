@@ -35,7 +35,7 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
             actionPalette = viewModel.actionPalette,
             onActionPick = { viewModel.executeAction(it) },
 
-            columns = 1,
+            columns = viewModel.expectedQuickBarColumns(),
         )
 
         viewModel.currentTool.configuration?.let {
