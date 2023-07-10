@@ -7,9 +7,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.lifecycle.ViewModel
+import com.darkrockstudios.libraries.mpfilepicker.FileSelected
 import com.zeropixel.pixelboard.canvas.CanvasBitmap
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
+import com.zeropixel.pixelboard.canvas.actions.SaveAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
 import com.zeropixel.pixelboard.utils.AlertDialogOptions
@@ -23,6 +25,13 @@ class CanvasViewModel(
     var alertOptions by mutableStateOf(AlertDialogOptions("") {})
         private set
 
+    var showFilePicker by mutableStateOf(false)
+    var filePickerFileExtensions by mutableStateOf(listOf<String>())
+    var filePickerCallback by mutableStateOf<FileSelected>({})
+
+    var showDirectoryPicker by mutableStateOf(false)
+    var directoryPickerCallback by mutableStateOf<(String?) -> Unit>({})
+
     val canvasBitmap = CanvasBitmap(width, height)
     var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())
         private set
@@ -33,11 +42,21 @@ class CanvasViewModel(
     val toolPalette = listOf(PenTool(), EraserTool())
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
-    val actionPalette = listOf<Action>(ClearAction())
+    val actionPalette = listOf(SaveAction(), ClearAction())
 
     fun showAlertDialog(options: AlertDialogOptions) {
         alertOptions = options
         showAlertDialog = true
+    }
+
+    fun showFilePicker(selected: FileSelected) {
+        filePickerCallback = selected
+        showFilePicker = true
+    }
+
+    fun showDirectoryPicker(selected: (String?) -> Unit) {
+        directoryPickerCallback = selected
+        showDirectoryPicker = true
     }
 
     fun executeAction(action: Action) {

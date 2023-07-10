@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
 import com.zeropixel.pixelboard.ui.components.actionbar.ActionBar
 import com.zeropixel.pixelboard.ui.components.colorpalette.QuickBar
@@ -53,4 +55,17 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
         options = viewModel.alertOptions,
         onClose = { viewModel.showAlertDialog = false },
     )
+    
+    FilePicker(
+        show = viewModel.showFilePicker,
+        fileExtensions = viewModel.filePickerFileExtensions,
+    ) { file ->
+        viewModel.filePickerCallback(file)
+        viewModel.showFilePicker = false
+    }
+
+    DirectoryPicker(viewModel.showDirectoryPicker) { path ->
+        viewModel.directoryPickerCallback(path)
+        viewModel.showDirectoryPicker = false
+    }
 }
