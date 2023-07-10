@@ -4,6 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toPixelMap
 import androidx.lifecycle.ViewModel
 import com.zeropixel.pixelboard.canvas.CanvasBitmap
 import com.zeropixel.pixelboard.canvas.actions.Action
@@ -25,7 +27,7 @@ class CanvasViewModel(
     var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())
         private set
 
-    val colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
+    var colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
 
     val toolPalette = listOf(PenTool(), EraserTool())
@@ -54,5 +56,24 @@ class CanvasViewModel(
         imageBitmap = canvasBitmap.asImageBitmap()
     }
 
-    fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 6 + 1
+    fun loadPalette(bitmap: ImageBitmap) {
+        val pixels = bitmap.toPixelMap()
+
+        val colors = mutableListOf<Color>()
+
+        repeat(pixels.width) { x ->
+            repeat(pixels.height) { y ->
+                val color = pixels[x, y]
+
+                if (!colors.contains(color)) {
+                    colors.add(color)
+                }
+            }
+        }
+
+        colorPalette = colors
+        currentColor = colorPalette.firstOrNull() ?: Color.Black
+    }
+
+    fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 8 + 1
 }

@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zeropixel.pixelboard.ui.screens.CanvasScreen
 import com.zeropixel.pixelboard.views.CanvasViewModel
@@ -23,6 +25,9 @@ class MainActivity : ComponentActivity() {
             MaterialTheme(colorScheme = colorScheme) {
                 val canvasViewModel =
                     viewModel<CanvasViewModel>(factory = CanvasViewModelFactory(32, 32))
+
+                val image = ImageBitmap.imageResource(id = R.drawable.apollo)
+                canvasViewModel.loadPalette(image)
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
