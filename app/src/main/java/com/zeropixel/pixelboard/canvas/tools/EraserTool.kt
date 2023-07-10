@@ -10,7 +10,7 @@ import com.zeropixel.pixelboard.ui.components.toolconfig.ToolConfigSlider
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class EraserTool : Tool {
-    private var size = 2
+    private var size = 3
 
     @Composable
     override fun icon(): ImageVector {
@@ -29,6 +29,6 @@ class EraserTool : Tool {
     }
 
     override fun CanvasViewModel.use(x: Int, y: Int) {
-        canvasBitmap.drawCircle(x, y, size - 1, Color.Transparent)
+        canvasBitmap.drawCircle(x, y, size / 2f, Color.Transparent)
     }
 }

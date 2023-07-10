@@ -5,6 +5,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import kotlin.math.sqrt
+
+private const val CIRCLE_RADIUS_ERROR = .1
 
 class CanvasBitmap(
     val width: Int,
@@ -26,10 +29,14 @@ class CanvasBitmap(
         }
     }
 
-    fun drawCircle(x: Int, y: Int, radius: Int, color: Color) {
-        for (drawX in (x - radius)..(x + radius)) {
-            for (drawY in (y - radius)..(y + radius)) {
-                drawPixel(drawX, drawY, color)
+    fun drawCircle(x: Int, y: Int, radius: Float, color: Color) {
+        for (xOffset in (-radius.toInt())..radius.toInt()) {
+            for (yOffset in (-radius.toInt())..radius.toInt()) {
+                val distance = sqrt((xOffset * xOffset + yOffset * yOffset).toFloat())
+
+                if (distance < radius + CIRCLE_RADIUS_ERROR) {
+                    drawPixel(x + xOffset, y + yOffset, color)
+                }
             }
         }
     }
