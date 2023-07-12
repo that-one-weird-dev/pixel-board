@@ -35,9 +35,11 @@ fun ToolBar(
                 isSelected = { it == currentTool },
                 onSelect = onToolPick,
             )
-            Divider(color = MaterialTheme.colorScheme.onPrimaryContainer)
-            Column {
-                currentTool.configuration?.invoke()
+            currentTool.configuration?.let { configuration ->
+                Divider(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Column {
+                    configuration()
+                }
             }
         }
     }

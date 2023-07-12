@@ -47,5 +47,11 @@ class CanvasBitmap(
         bitmap.setPixel(x, y, color.toArgb())
     }
 
+    fun getColor(x: Int, y: Int): Color? {
+        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return null
+
+        return Color(bitmap.getPixel(x, y))
+    }
+
     fun asImageBitmap(): ImageBitmap = bitmap.asImageBitmap()
 }

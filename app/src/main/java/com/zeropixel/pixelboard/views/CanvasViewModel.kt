@@ -13,6 +13,7 @@ import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.actions.SaveAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
+import com.zeropixel.pixelboard.canvas.tools.FillTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
 import com.zeropixel.pixelboard.utils.AlertDialogOptions
 
@@ -39,7 +40,7 @@ class CanvasViewModel(
     var colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
 
-    val toolPalette = listOf(PenTool(), EraserTool())
+    val toolPalette = listOf(PenTool(), EraserTool(), FillTool())
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
     val actionPalette = listOf(SaveAction(), ClearAction())
