@@ -36,6 +36,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.zeropixel.pixelboard.utils.GenerateBackgroundBitmap
 
 const val DefaultScale = .85f
 
@@ -83,7 +84,7 @@ fun PixelCanvas(
                 }
             }
     ) {
-        Image(
+        Box(
             modifier = Modifier
                 .align(Alignment.Center)
                 .graphicsLayer {
@@ -104,13 +105,32 @@ fun PixelCanvas(
                 .shadow(10.dp)
                 .border(1.dp, MaterialTheme.colorScheme.onBackground)
                 .background(Color.White),
+        ) {
+            val backgroundBitmap = GenerateBackgroundBitmap(
+                width = bitmap.width,
+                height = bitmap.height,
+                cellSize = 16,
+            )
+            Image(
+                modifier = Modifier.fillMaxSize(),
 
-            painter = BitmapPainter(
-                image = bitmap,
-                filterQuality = FilterQuality.None,
-            ),
-            contentDescription = "Canvas",
-        )
+                painter = BitmapPainter(
+                    image = backgroundBitmap.asImageBitmap(),
+                    filterQuality = FilterQuality.None,
+                ),
+                contentDescription = "Background"
+            )
+
+            Image(
+                modifier = Modifier.fillMaxSize(),
+
+                painter = BitmapPainter(
+                    image = bitmap,
+                    filterQuality = FilterQuality.None,
+                ),
+                contentDescription = "Canvas",
+            )
+        }
 
         val canReset = rotation != 0f
         ResetButton(visible = canReset) {
