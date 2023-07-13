@@ -1,6 +1,7 @@
 package com.zeropixel.pixelboard.views
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
@@ -9,7 +10,6 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.lifecycle.ViewModel
 import com.darkrockstudios.libraries.mpfilepicker.FileSelected
 import com.zeropixel.pixelboard.canvas.Layer
-import com.zeropixel.pixelboard.canvas.LayerBitmap
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.actions.SaveAction
@@ -19,8 +19,8 @@ import com.zeropixel.pixelboard.canvas.tools.PenTool
 import com.zeropixel.pixelboard.utils.AlertDialogOptions
 
 class CanvasViewModel(
-    width: Int = 32,
-    height: Int = 32,
+    val width: Int = 32,
+    val height: Int = 32,
 ) : ViewModel() {
 
     var showAlertDialog by mutableStateOf(false)
@@ -34,7 +34,15 @@ class CanvasViewModel(
     var showDirectoryPicker by mutableStateOf(false)
     var directoryPickerCallback by mutableStateOf<(String?) -> Unit>({})
 
-    var layer by mutableStateOf(Layer(LayerBitmap(width, height)))
+    val layers = mutableStateListOf(Layer(width, height), Layer(width, height))
+    var currentLayerId by mutableStateOf(0)
+        private set
+
+    val currentLayer
+        get() = layers[currentLayerId]
+
+    var rerenderLayerState by mutableStateOf(false)
+        private set
 
     var colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
@@ -59,6 +67,12 @@ class CanvasViewModel(
         showDirectoryPicker = true
     }
 
+    fun changeCurrentLayer(layerId: Int) {
+        if (layerId < 0 || layerId >= layers.size) return
+
+        currentLayerId = layerId
+    }
+
     fun executeAction(action: Action) {
         with(action) {
             execute()
@@ -66,13 +80,13 @@ class CanvasViewModel(
     }
 
     fun useAt(x: Int, y: Int) {
-        if (x < 0 || x >= layer.width || y < 0 || y >= layer.height) return
+        if (x < 0 || x >= width || y < 0 || y >= height) return
 
         with(currentTool) {
             use(x, y)
         }
 
-        layer = Layer(layer.bitmap, layer.visible)
+        rerenderLayers()
     }
 
     fun loadPalette(bitmap: ImageBitmap) {
@@ -92,6 +106,10 @@ class CanvasViewModel(
 
         colorPalette = colors
         currentColor = colorPalette.firstOrNull() ?: Color.Black
+    }
+
+    fun rerenderLayers() {
+        rerenderLayerState = !rerenderLayerState
     }
 
     fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 8 + 1

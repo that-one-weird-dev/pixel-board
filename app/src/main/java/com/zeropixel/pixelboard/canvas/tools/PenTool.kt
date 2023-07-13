@@ -28,6 +28,6 @@ class PenTool : Tool {
     }
 
     override fun CanvasViewModel.use(x: Int, y: Int) {
-        layer.bitmap.drawCircle(x, y, size / 2f, currentColor)
+        currentLayer.bitmap.drawCircle(x, y, size / 2f, currentColor)
     }
 }

@@ -29,6 +29,6 @@ class EraserTool : Tool {
     }
 
     override fun CanvasViewModel.use(x: Int, y: Int) {
-        layer.bitmap.drawCircle(x, y, size / 2f, Color.Transparent)
+        currentLayer.bitmap.drawCircle(x, y, size / 2f, Color.Transparent)
     }
 }

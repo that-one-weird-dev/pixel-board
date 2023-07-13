@@ -19,8 +19,13 @@ import com.zeropixel.pixelboard.views.CanvasViewModel
 fun CanvasScreen(viewModel: CanvasViewModel) {
 
     PixelCanvas(
-        viewModel.layer.bitmap.asImageBitmap(),
+        viewModel.width,
+        viewModel.height,
+
+        viewModel.layers,
+
         onPixelDraw = viewModel::useAt,
+        viewModel.rerenderLayerState,
     )
 
     Box(Modifier.padding(10.dp)) {

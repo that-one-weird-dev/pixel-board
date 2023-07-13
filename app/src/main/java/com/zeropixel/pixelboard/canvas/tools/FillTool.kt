@@ -11,7 +11,7 @@ class FillTool : Tool {
     override val configuration: (@Composable () -> Unit)? = null
 
     override fun CanvasViewModel.use(x: Int, y: Int) {
-        val overriddenColor = layer.bitmap.getColor(x, y) ?: return
+        val overriddenColor = currentLayer.bitmap.getColor(x, y) ?: return
 
         fill(x, y, overriddenColor)
     }
@@ -20,10 +20,10 @@ class FillTool : Tool {
     override fun icon(): ImageVector = Icons.Default.Place
 
     private fun CanvasViewModel.fill(x: Int, y: Int, overriddenColor: Color) {
-        val color = layer.bitmap.getColor(x, y) ?: return
+        val color = currentLayer.bitmap.getColor(x, y) ?: return
         if (color != overriddenColor) return
 
-        layer.bitmap.drawPixel(x, y, currentColor)
+        currentLayer.bitmap.drawPixel(x, y, currentColor)
 
         fill(x + 1, y, overriddenColor)
         fill(x - 1, y, overriddenColor)

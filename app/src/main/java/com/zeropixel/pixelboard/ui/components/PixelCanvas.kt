@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.input.pointer.PointerInputChange
@@ -36,14 +35,20 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.zeropixel.pixelboard.canvas.Layer
 import com.zeropixel.pixelboard.canvas.LayerBitmap
 
 const val DefaultScale = .85f
 
 @Composable
 fun PixelCanvas(
-    bitmap: ImageBitmap,
+    width: Int,
+    height: Int,
+
+    layers: List<Layer>,
     onPixelDraw: (Int, Int) -> Unit,
+    /// Used for re-rendering the component when needed
+    @Suppress("UNUSED_PARAMETER") rerender: Boolean,
 ) {
     var scale by remember { mutableStateOf(DefaultScale) }
     var rotation by remember { mutableStateOf(0f) }
@@ -55,8 +60,8 @@ fun PixelCanvas(
     fun drawPixel(offset: Offset) {
         coordinates?.let {
             val canvasSize = it.size
-            val x = offset.x / canvasSize.width * bitmap.width
-            val y = offset.y / canvasSize.height * bitmap.height
+            val x = offset.x / canvasSize.width * width
+            val y = offset.y / canvasSize.height * height
 
             onPixelDraw(x.toInt(), y.toInt())
         }
@@ -107,8 +112,8 @@ fun PixelCanvas(
                 .background(Color.White),
         ) {
             val backgroundBitmap = LayerBitmap.backgroundGrid(
-                width = bitmap.width,
-                height = bitmap.height,
+                width = width,
+                height = height,
                 cellSize = 16,
             )
             Image(
@@ -121,15 +126,17 @@ fun PixelCanvas(
                 contentDescription = "Background"
             )
 
-            Image(
-                modifier = Modifier.fillMaxSize(),
+            layers.forEach { layer ->
+                Image(
+                    modifier = Modifier.fillMaxSize(),
 
-                painter = BitmapPainter(
-                    image = bitmap,
-                    filterQuality = FilterQuality.None,
-                ),
-                contentDescription = "Canvas",
-            )
+                    painter = BitmapPainter(
+                        image = layer.bitmap.asImageBitmap(),
+                        filterQuality = FilterQuality.None,
+                    ),
+                    contentDescription = "Canvas",
+                )
+            }
         }
 
         val canReset = rotation != 0f

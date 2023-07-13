@@ -1,9 +1,12 @@
 package com.zeropixel.pixelboard.canvas
 
 class Layer(
-    val bitmap: LayerBitmap,
-    val visible: Boolean = true,
+    width: Int,
+    height: Int,
 ) {
-    val width = bitmap.width
-    val height = bitmap.height
+    val bitmap = LayerBitmap(width, height)
+    val visible = true
+
+    val width get() = bitmap.width
+    val height get() = bitmap.height
 }
