@@ -8,7 +8,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.lifecycle.ViewModel
 import com.darkrockstudios.libraries.mpfilepicker.FileSelected
-import com.zeropixel.pixelboard.canvas.CanvasBitmap
+import com.zeropixel.pixelboard.canvas.Layer
+import com.zeropixel.pixelboard.canvas.LayerBitmap
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.actions.SaveAction
@@ -33,9 +34,7 @@ class CanvasViewModel(
     var showDirectoryPicker by mutableStateOf(false)
     var directoryPickerCallback by mutableStateOf<(String?) -> Unit>({})
 
-    val canvasBitmap = CanvasBitmap(width, height)
-    var imageBitmap by mutableStateOf(canvasBitmap.asImageBitmap())
-        private set
+    var layer by mutableStateOf(Layer(LayerBitmap(width, height)))
 
     var colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
@@ -67,13 +66,13 @@ class CanvasViewModel(
     }
 
     fun useAt(x: Int, y: Int) {
-        if (x < 0 || x >= canvasBitmap.width || y < 0 || y >= canvasBitmap.height) return
+        if (x < 0 || x >= layer.width || y < 0 || y >= layer.height) return
 
         with(currentTool) {
             use(x, y)
         }
 
-        imageBitmap = canvasBitmap.asImageBitmap()
+        layer = Layer(layer.bitmap, layer.visible)
     }
 
     fun loadPalette(bitmap: ImageBitmap) {

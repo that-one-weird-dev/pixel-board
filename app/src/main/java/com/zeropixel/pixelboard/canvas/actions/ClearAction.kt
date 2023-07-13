@@ -16,7 +16,7 @@ class ClearAction : Action {
 
     override fun CanvasViewModel.execute() {
         showAlertDialog(AlertDialogOptions("Are you sure you want to clear the canvas?") {
-            canvasBitmap.clearPixels()
+            layer.bitmap.clearPixels()
         })
     }
 }

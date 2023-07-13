@@ -19,7 +19,7 @@ import com.zeropixel.pixelboard.views.CanvasViewModel
 fun CanvasScreen(viewModel: CanvasViewModel) {
 
     PixelCanvas(
-        viewModel.imageBitmap,
+        viewModel.layer.bitmap.asImageBitmap(),
         onPixelDraw = viewModel::useAt,
     )
 

@@ -36,7 +36,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import com.zeropixel.pixelboard.utils.GenerateBackgroundBitmap
+import com.zeropixel.pixelboard.canvas.LayerBitmap
 
 const val DefaultScale = .85f
 
@@ -106,7 +106,7 @@ fun PixelCanvas(
                 .border(1.dp, MaterialTheme.colorScheme.onBackground)
                 .background(Color.White),
         ) {
-            val backgroundBitmap = GenerateBackgroundBitmap(
+            val backgroundBitmap = LayerBitmap.backgroundGrid(
                 width = bitmap.width,
                 height = bitmap.height,
                 cellSize = 16,

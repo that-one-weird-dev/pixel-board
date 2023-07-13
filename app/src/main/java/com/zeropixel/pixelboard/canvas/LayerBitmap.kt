@@ -9,7 +9,7 @@ import kotlin.math.sqrt
 
 private const val CIRCLE_RADIUS_ERROR = .1
 
-class CanvasBitmap(
+class LayerBitmap(
     val width: Int,
     val height: Int,
     val backgroundColor: Color = Color.Transparent
@@ -54,4 +54,27 @@ class CanvasBitmap(
     }
 
     fun asImageBitmap(): ImageBitmap = bitmap.asImageBitmap()
+
+    companion object {
+        fun backgroundGrid(width: Int, height: Int, cellSize: Int): LayerBitmap {
+            val bitmap = LayerBitmap(width, height)
+
+            for (x in 0..width) {
+                for (y in 0..height) {
+                    val isDarkCellHorizontally = x / cellSize == 0
+                    val isDarkCellVertically = y / cellSize == 0
+
+                    val color = if (isDarkCellHorizontally == isDarkCellVertically) {
+                        Color(0xffcacacc)
+                    } else {
+                        Color(0xfffdfdfd)
+                    }
+
+                    bitmap.drawPixel(x, y, color)
+                }
+            }
+
+            return bitmap
+        }
+    }
 }
