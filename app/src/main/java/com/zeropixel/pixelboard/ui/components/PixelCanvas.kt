@@ -47,6 +47,7 @@ fun PixelCanvas(
 
     layers: List<Layer>,
     onPixelDraw: (Int, Int) -> Unit,
+
     /// Used for re-rendering the component when needed
     @Suppress("UNUSED_PARAMETER") rerender: Boolean,
 ) {
@@ -127,15 +128,17 @@ fun PixelCanvas(
             )
 
             layers.forEach { layer ->
-                Image(
-                    modifier = Modifier.fillMaxSize(),
+                if (layer.visible) {
+                    Image(
+                        modifier = Modifier.fillMaxSize(),
 
-                    painter = BitmapPainter(
-                        image = layer.bitmap.asImageBitmap(),
-                        filterQuality = FilterQuality.None,
-                    ),
-                    contentDescription = "Canvas",
-                )
+                        painter = BitmapPainter(
+                            image = layer.bitmap.asImageBitmap(),
+                            filterQuality = FilterQuality.None,
+                        ),
+                        contentDescription = "Canvas",
+                    )
+                }
             }
         }
 

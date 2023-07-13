@@ -11,6 +11,7 @@ import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
 import com.zeropixel.pixelboard.ui.components.actionbar.ActionBar
 import com.zeropixel.pixelboard.ui.components.colorpalette.QuickBar
+import com.zeropixel.pixelboard.ui.components.layerbar.LayerBar
 import com.zeropixel.pixelboard.ui.components.menus.ConfirmDialog
 import com.zeropixel.pixelboard.ui.components.toolbar.ToolBar
 import com.zeropixel.pixelboard.views.CanvasViewModel
@@ -25,7 +26,7 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
         viewModel.layers,
 
         onPixelDraw = viewModel::useAt,
-        viewModel.rerenderLayerState,
+        viewModel.rerenderCanvasState,
     )
 
     Box(Modifier.padding(10.dp)) {
@@ -52,6 +53,20 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
 
             actionPalette = viewModel.actionPalette,
             onActionPick = { action -> viewModel.executeAction(action) },
+        )
+
+        LayerBar(
+            modifier = Modifier.align(Alignment.TopEnd),
+
+            layers = viewModel.layers,
+            currentLayerId = viewModel.currentLayerId,
+
+            onLayerSelect = { layerId ->
+                viewModel.changeCurrentLayer(layerId)
+            },
+            onLayerVisibilityToggle = { layerId ->
+                viewModel.toggleLayerVisibility(layerId)
+            }
         )
     }
 

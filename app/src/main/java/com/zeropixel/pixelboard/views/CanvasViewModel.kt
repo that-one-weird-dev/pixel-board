@@ -34,15 +34,12 @@ class CanvasViewModel(
     var showDirectoryPicker by mutableStateOf(false)
     var directoryPickerCallback by mutableStateOf<(String?) -> Unit>({})
 
-    val layers = mutableStateListOf(Layer(width, height), Layer(width, height))
+    val layers = mutableStateListOf(Layer(width, height, "Layer 0"), Layer(width, height, "Layer 1"))
     var currentLayerId by mutableStateOf(0)
         private set
 
     val currentLayer
         get() = layers[currentLayerId]
-
-    var rerenderLayerState by mutableStateOf(false)
-        private set
 
     var colorPalette = listOf(Color.Black, Color.Red, Color.Blue, Color.Green)
     var currentColor by mutableStateOf(colorPalette.firstOrNull() ?: Color.Black)
@@ -51,6 +48,8 @@ class CanvasViewModel(
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
     val actionPalette = listOf(SaveAction(), ClearAction())
+
+    var rerenderCanvasState by mutableStateOf(false)
 
     fun showAlertDialog(options: AlertDialogOptions) {
         alertOptions = options
@@ -73,6 +72,12 @@ class CanvasViewModel(
         currentLayerId = layerId
     }
 
+    fun toggleLayerVisibility(layerId: Int) {
+        val oldLayer = layers[layerId]
+
+        layers[layerId] = Layer(oldLayer.bitmap, !oldLayer.visible, oldLayer.name)
+    }
+
     fun executeAction(action: Action) {
         with(action) {
             execute()
@@ -86,7 +91,7 @@ class CanvasViewModel(
             use(x, y)
         }
 
-        rerenderLayers()
+        rerenderCanvas()
     }
 
     fun loadPalette(bitmap: ImageBitmap) {
@@ -108,9 +113,9 @@ class CanvasViewModel(
         currentColor = colorPalette.firstOrNull() ?: Color.Black
     }
 
-    fun rerenderLayers() {
-        rerenderLayerState = !rerenderLayerState
-    }
-
     fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 8 + 1
+
+    private fun rerenderCanvas() {
+        rerenderCanvasState = !rerenderCanvasState
+    }
 }
