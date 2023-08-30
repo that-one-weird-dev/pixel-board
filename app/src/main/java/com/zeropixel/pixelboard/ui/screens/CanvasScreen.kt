@@ -25,7 +25,10 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
 
         viewModel.layers,
 
-        onPixelDraw = viewModel::useAt,
+        onDrawStart = viewModel::startToolDraw,
+        onDraw = viewModel::toolDraw,
+        onDrawEnd = viewModel::endToolDraw,
+
         viewModel.rerenderCanvasState,
     )
 

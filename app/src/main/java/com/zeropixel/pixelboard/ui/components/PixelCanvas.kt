@@ -46,7 +46,9 @@ fun PixelCanvas(
     height: Int,
 
     layers: List<Layer>,
-    onPixelDraw: (Int, Int) -> Unit,
+    onDrawStart: (Int, Int) -> Unit,
+    onDraw: (Int, Int) -> Unit,
+    onDrawEnd: () -> Unit,
 
     /// Used for re-rendering the component when needed
     @Suppress("UNUSED_PARAMETER") rerender: Boolean,
@@ -58,25 +60,36 @@ fun PixelCanvas(
     var coordinates: LayoutCoordinates? = null
     var lastDragPosition = Offset(0f, 0f)
 
-    fun drawPixel(offset: Offset) {
+    fun invokeCallbackWithOffset(offset: Offset, callback: (Int, Int) -> Unit) {
         coordinates?.let {
             val canvasSize = it.size
             val x = offset.x / canvasSize.width * width
             val y = offset.y / canvasSize.height * height
 
-            onPixelDraw(x.toInt(), y.toInt())
+            callback(x.toInt(), y.toInt())
         }
     }
 
     fun onDragStart(offset: Offset) {
+        invokeCallbackWithOffset(offset, onDrawStart)
         lastDragPosition = offset
     }
 
     fun onDrag(@Suppress("UNUSED_PARAMETER") change: PointerInputChange, offset: Offset) {
-        val newPosition = Offset(lastDragPosition.x + offset.x, lastDragPosition.y + offset.y)
+        val newPosition = lastDragPosition.plus(offset)
 
-        drawPixel(newPosition)
+        invokeCallbackWithOffset(newPosition, onDraw)
         lastDragPosition = newPosition
+    }
+
+    fun onDragEnd() {
+        onDrawEnd()
+    }
+
+    fun onTap(offset: Offset) {
+        invokeCallbackWithOffset(offset, onDrawStart)
+        invokeCallbackWithOffset(offset, onDraw)
+        onDrawEnd()
     }
 
     Box(
@@ -101,10 +114,10 @@ fun PixelCanvas(
                     rotationZ = rotation
                 }
                 .pointerInput(Unit) {
-                    detectDragGestures(onDrag = ::onDrag, onDragStart = ::onDragStart)
+                    detectDragGestures(onDrag = ::onDrag, onDragStart = ::onDragStart, onDragEnd = ::onDragEnd)
                 }
                 .pointerInput(Unit) {
-                    detectTapGestures(onTap = ::drawPixel)
+                    detectTapGestures(onTap = ::onTap)
                 }
                 .onGloballyPositioned { coordinates = it }
                 .aspectRatio(1f)

@@ -84,11 +84,29 @@ class CanvasViewModel(
         }
     }
 
-    fun useAt(x: Int, y: Int) {
+    fun startToolDraw(x: Int, y: Int) {
         if (x < 0 || x >= width || y < 0 || y >= height) return
 
         with(currentTool) {
-            use(x, y)
+            drawStart(x, y)
+        }
+
+        rerenderCanvas()
+    }
+
+    fun toolDraw(x: Int, y: Int) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return
+
+        with(currentTool) {
+            draw(x, y)
+        }
+
+        rerenderCanvas()
+    }
+
+    fun endToolDraw() {
+        with(currentTool) {
+            drawEnd()
         }
 
         rerenderCanvas()

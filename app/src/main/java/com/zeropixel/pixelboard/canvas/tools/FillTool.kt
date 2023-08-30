@@ -10,7 +10,7 @@ import com.zeropixel.pixelboard.views.CanvasViewModel
 class FillTool : Tool {
     override val configuration: (@Composable () -> Unit)? = null
 
-    override fun CanvasViewModel.use(x: Int, y: Int) {
+    override fun CanvasViewModel.drawStart(x: Int, y: Int) {
         val overriddenColor = currentLayer.bitmap.getColor(x, y) ?: return
 
         fill(x, y, overriddenColor)

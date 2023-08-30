@@ -7,5 +7,7 @@ import com.zeropixel.pixelboard.views.CanvasViewModel
 interface Tool : IconProvider {
     val configuration: (@Composable () -> Unit)?
 
-    fun CanvasViewModel.use(x: Int, y: Int)
+    fun CanvasViewModel.drawStart(x: Int, y: Int) {}
+    fun CanvasViewModel.draw(x: Int, y: Int) {}
+    fun CanvasViewModel.drawEnd() {}
 }
