@@ -68,7 +68,7 @@ inline fun linePixels(
 
     var x: Float = xStart.toFloat()
     var y: Float = yStart.toFloat()
-    for (i in 0 until steps) {
+    for (i in 0..steps) {
         block(round(x).toInt(), round(y).toInt())
 
         x += xInc

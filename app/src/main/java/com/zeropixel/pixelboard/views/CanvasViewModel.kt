@@ -7,18 +7,20 @@ import androidx.lifecycle.ViewModel
 import com.zeropixel.pixelboard.canvas.Canvas
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
-import com.zeropixel.pixelboard.canvas.actions.SaveAction
 import com.zeropixel.pixelboard.canvas.actions.UndoAction
+import com.zeropixel.pixelboard.canvas.serialization.saveCanvas
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.FillTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
 import com.zeropixel.pixelboard.canvas.undo.Undoable
 import com.zeropixel.pixelboard.canvas.utils.ColorId
 import com.zeropixel.pixelboard.canvas.utils.LayerId
+import java.util.Timer
+import java.util.TimerTask
 
 class CanvasViewModel(
     val canvas: Canvas,
-    val filesDir: String,
+    private val filesDir: String,
 ) : ViewModel() {
     var currentLayerId by mutableStateOf<LayerId>(0)
     var currentColorId by mutableStateOf<ColorId>(0)
@@ -26,7 +28,7 @@ class CanvasViewModel(
     val toolPalette = listOf(PenTool(), EraserTool(), FillTool())
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
-    val actionPalette = listOf(SaveAction(), ClearAction(), UndoAction())
+    val actionPalette = listOf(ClearAction(), UndoAction())
 
     private val undoStack = mutableListOf<Undoable>()
 
@@ -36,6 +38,8 @@ class CanvasViewModel(
         with(action) {
             execute()
         }
+
+        saveToFile()
     }
 
     fun startToolDraw(x: Int, y: Int) {
@@ -64,6 +68,8 @@ class CanvasViewModel(
         }
 
         rerenderCanvas()
+
+        saveToFile()
     }
 
     fun pushUndoable(undoable: Undoable) {
@@ -82,6 +88,10 @@ class CanvasViewModel(
     }
 
     fun expectedQuickBarColumns(): Int = (canvas.palette.size - 1) / 8 + 1
+
+    private fun saveToFile() {
+        saveCanvas(filesDir, "default", canvas)
+    }
 
     private fun rerenderCanvas() {
         rerenderCanvasState = !rerenderCanvasState
