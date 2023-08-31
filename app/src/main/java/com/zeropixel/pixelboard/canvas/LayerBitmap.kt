@@ -48,8 +48,8 @@ class LayerBitmap(
         fun backgroundGrid(width: Int, height: Int, cellSize: Int): LayerBitmap {
             val bitmap = LayerBitmap(width, height)
 
-            for (x in 0..width) {
-                for (y in 0..height) {
+            for (x in 0 until width) {
+                for (y in 0 until height) {
                     val isDarkCellHorizontally = x / cellSize == 0
                     val isDarkCellVertically = y / cellSize == 0
 

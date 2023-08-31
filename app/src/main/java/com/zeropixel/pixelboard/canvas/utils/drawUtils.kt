@@ -39,8 +39,8 @@ inline fun rectanglePixels(
         callsInPlace(block, InvocationKind.UNKNOWN)
     }
 
-    for (xOffset in 0..width) {
-        for (yOffset in 0..height) {
+    for (xOffset in 0 until width) {
+        for (yOffset in 0 until height) {
             block(x + xOffset, y + yOffset)
         }
     }
@@ -68,7 +68,7 @@ inline fun linePixels(
 
     var x: Float = xStart.toFloat()
     var y: Float = yStart.toFloat()
-    for (i in 0..steps) {
+    for (i in 0 until steps) {
         block(round(x).toInt(), round(y).toInt())
 
         x += xInc
