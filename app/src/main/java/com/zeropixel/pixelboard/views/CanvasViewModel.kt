@@ -12,7 +12,6 @@ import com.darkrockstudios.libraries.mpfilepicker.FileSelected
 import com.zeropixel.pixelboard.canvas.Layer
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
-import com.zeropixel.pixelboard.canvas.actions.SaveAction
 import com.zeropixel.pixelboard.canvas.actions.UndoAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.FillTool
@@ -49,7 +48,7 @@ class CanvasViewModel(
     val toolPalette = listOf(PenTool(), EraserTool(), FillTool())
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
-    val actionPalette = listOf(SaveAction(), ClearAction(), UndoAction())
+    val actionPalette = listOf(ClearAction(), UndoAction())
 
     private val undoStack = mutableListOf<Undoable>()
 
