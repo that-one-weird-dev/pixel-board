@@ -15,8 +15,6 @@ import com.zeropixel.pixelboard.canvas.tools.PenTool
 import com.zeropixel.pixelboard.canvas.undo.Undoable
 import com.zeropixel.pixelboard.canvas.utils.ColorId
 import com.zeropixel.pixelboard.canvas.utils.LayerId
-import java.util.Timer
-import java.util.TimerTask
 
 class CanvasViewModel(
     val canvas: Canvas,
