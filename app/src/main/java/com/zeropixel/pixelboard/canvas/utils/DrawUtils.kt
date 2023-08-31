@@ -3,7 +3,10 @@ package com.zeropixel.pixelboard.canvas.utils
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.math.abs
+import kotlin.math.round
 import kotlin.math.sqrt
+
 
 const val CIRCLE_RADIUS_ERROR = .1
 
@@ -40,5 +43,35 @@ inline fun rectanglePixels(
         for (yOffset in 0..height) {
             block(x + xOffset, y + yOffset)
         }
+    }
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun linePixels(
+    xStart: Int,
+    yStart: Int,
+    xEnd: Int,
+    yEnd: Int,
+    block: (xPos: Int, yPos: Int) -> Unit
+) {
+    contract {
+        callsInPlace(block, InvocationKind.UNKNOWN)
+    }
+
+    val xDiff = xEnd - xStart
+    val yDiff = yEnd - yStart
+
+    val steps = if (abs(xDiff) > abs(yDiff)) abs(xDiff) else abs(yDiff)
+
+    val xInc = xDiff / steps.toFloat()
+    val yInc = yDiff / steps.toFloat()
+
+    var x: Float = xStart.toFloat()
+    var y: Float = yStart.toFloat()
+    for (i in 0..steps) {
+        block(round(x).toInt(), round(y).toInt())
+
+        x += xInc
+        y += yInc
     }
 }
