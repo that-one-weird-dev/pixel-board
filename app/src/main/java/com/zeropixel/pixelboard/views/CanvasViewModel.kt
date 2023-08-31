@@ -13,9 +13,11 @@ import com.zeropixel.pixelboard.canvas.Layer
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.canvas.actions.ClearAction
 import com.zeropixel.pixelboard.canvas.actions.SaveAction
+import com.zeropixel.pixelboard.canvas.actions.UndoAction
 import com.zeropixel.pixelboard.canvas.tools.EraserTool
 import com.zeropixel.pixelboard.canvas.tools.FillTool
 import com.zeropixel.pixelboard.canvas.tools.PenTool
+import com.zeropixel.pixelboard.canvas.undo.Undoable
 import com.zeropixel.pixelboard.utils.AlertDialogOptions
 
 class CanvasViewModel(
@@ -47,7 +49,9 @@ class CanvasViewModel(
     val toolPalette = listOf(PenTool(), EraserTool(), FillTool())
     var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
 
-    val actionPalette = listOf(SaveAction(), ClearAction())
+    val actionPalette = listOf(SaveAction(), ClearAction(), UndoAction())
+
+    private val undoStack = mutableListOf<Undoable>()
 
     var rerenderCanvasState by mutableStateOf(false)
 
@@ -129,6 +133,21 @@ class CanvasViewModel(
 
         colorPalette = colors
         currentColor = colorPalette.firstOrNull() ?: Color.Black
+    }
+
+    fun pushUndoable(undoable: Undoable) {
+        undoStack.add(undoable)
+    }
+
+    fun popUndoableAndUndo(): Boolean {
+        val undoable = undoStack.lastOrNull() ?: return false
+        undoStack.remove(undoable)
+
+        with(undoable) {
+            undo()
+        }
+
+        return true
     }
 
     fun expectedQuickBarColumns(): Int = (colorPalette.size - 1) / 8 + 1

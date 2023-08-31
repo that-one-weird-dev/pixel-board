@@ -6,11 +6,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.zeropixel.pixelboard.R
+import com.zeropixel.pixelboard.canvas.undo.UndoablePixelsBuilder
+import com.zeropixel.pixelboard.canvas.utils.DrawUtils
 import com.zeropixel.pixelboard.ui.components.toolbar.ToolConfigSlider
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class EraserTool : Tool {
     private var size = 3
+
+    private val undoableBuilder = UndoablePixelsBuilder()
 
     @Composable
     override fun icon(): ImageVector {
@@ -29,6 +33,14 @@ class EraserTool : Tool {
     }
 
     override fun CanvasViewModel.draw(x: Int, y: Int) {
-        currentLayer.bitmap.drawCircle(x, y, size / 2f, Color.Transparent)
+        DrawUtils.circle(x, y, size / 2f) { xPos, yPos ->
+            val oldColor = currentLayer.bitmap.setPixel(xPos, yPos, Color.Transparent)
+
+            undoableBuilder.addPixel(xPos, yPos, Color(oldColor))
+        }
+    }
+
+    override fun CanvasViewModel.drawEnd() {
+        pushUndoable(undoableBuilder.build("Eraser stroke", currentLayerId))
     }
 }

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
-import kotlin.math.sqrt
+import androidx.core.graphics.get
 
 private const val CIRCLE_RADIUS_ERROR = .1
 
@@ -24,27 +24,22 @@ class LayerBitmap(
     fun clearPixels() {
         repeat(width) { x ->
             repeat(height) { y ->
-                drawPixel(x, y, backgroundColor)
+                setPixel(x, y, backgroundColor)
             }
         }
     }
 
-    fun drawCircle(x: Int, y: Int, radius: Float, color: Color) {
-        for (xOffset in (-radius.toInt())..radius.toInt()) {
-            for (yOffset in (-radius.toInt())..radius.toInt()) {
-                val distance = sqrt((xOffset * xOffset + yOffset * yOffset).toFloat())
+    /**
+     * @return old color
+     */
+    fun setPixel(x: Int, y: Int, color: Color): Int {
+        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return color.toArgb()
 
-                if (distance < radius + CIRCLE_RADIUS_ERROR) {
-                    drawPixel(x + xOffset, y + yOffset, color)
-                }
-            }
-        }
-    }
-
-    fun drawPixel(x: Int, y: Int, color: Color) {
-        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return
+        val oldColor = bitmap[x, y]
 
         bitmap.setPixel(x, y, color.toArgb())
+
+        return oldColor
     }
 
     fun getColor(x: Int, y: Int): Color? {
@@ -70,7 +65,7 @@ class LayerBitmap(
                         Color(0xfffdfdfd)
                     }
 
-                    bitmap.drawPixel(x, y, color)
+                    bitmap.setPixel(x, y, color)
                 }
             }
 
