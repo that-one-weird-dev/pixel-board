@@ -11,8 +11,4 @@ class Layer(
         name: String = "Default",
         visible: Boolean = true,
     ) : this(LayerBitmap(width, height), visible, name)
-
-
-    val width get() = bitmap.width
-    val height get() = bitmap.height
 }

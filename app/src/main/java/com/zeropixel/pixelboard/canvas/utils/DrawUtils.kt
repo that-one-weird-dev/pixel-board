@@ -24,4 +24,17 @@ object DrawUtils {
             }
         }
     }
+
+    @OptIn(ExperimentalContracts::class)
+    inline fun rectangle(x: Int, y: Int, width: Int, height: Int, block: (xPos: Int, yPos: Int) -> Unit) {
+        contract {
+            callsInPlace(block, InvocationKind.UNKNOWN)
+        }
+
+        for (xOffset in 0..width) {
+            for (yOffset in 0..height) {
+                block(x + xOffset, y + yOffset)
+            }
+        }
+    }
 }

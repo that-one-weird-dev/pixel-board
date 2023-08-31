@@ -14,15 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.zeropixel.pixelboard.canvas.palette.ColorPalette
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 
 @Composable
 fun ColorPalette(
     modifier: Modifier = Modifier,
-    currentColor: Color,
-    palette: List<Color>,
-    onColorPick: (Color) -> Unit,
+    currentColor: ColorInt,
+    palette: ColorPalette,
+    onColorPick: (ColorInt) -> Unit,
 
     columns: Int,
 ) {
@@ -34,7 +35,7 @@ fun ColorPalette(
         verticalArrangement = Arrangement.spacedBy(5.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
-        itemsIndexed(palette) { i, color ->
+        itemsIndexed(palette.colors) { i, color ->
             val isSelected = color == currentColor
 
             val topLeftCorner = if (i == 0) 10.dp else 5.dp
@@ -52,10 +53,9 @@ fun ColorPalette(
             Color(
                 Modifier.clip(shape),
                 isSelected,
-                color
-            ) {
-                onColorPick(color)
-            }
+                color,
+                onClick = { onColorPick(i) }
+            )
         }
     }
 }
@@ -64,7 +64,7 @@ fun ColorPalette(
 private fun Color(
     modifier: Modifier,
     isSelected: Boolean,
-    color: Color,
+    color: ColorInt,
     onClick: () -> Unit,
 ) {
     val scale = if (isSelected) .9f else 1f
@@ -75,7 +75,7 @@ private fun Color(
             .scale(scale)
             .then(modifier)
             .aspectRatio(1f)
-            .background(color)
+            .background(androidx.compose.ui.graphics.Color(color))
             .clickable(onClick = onClick)
     )
 }

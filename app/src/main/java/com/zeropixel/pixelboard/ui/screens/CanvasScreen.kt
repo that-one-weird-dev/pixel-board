@@ -6,13 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.zeropixel.pixelboard.ui.components.PixelCanvas
 import com.zeropixel.pixelboard.ui.components.actionbar.ActionBar
 import com.zeropixel.pixelboard.ui.components.colorpalette.QuickBar
 import com.zeropixel.pixelboard.ui.components.layerbar.LayerBar
-import com.zeropixel.pixelboard.ui.components.menus.ConfirmDialog
 import com.zeropixel.pixelboard.ui.components.toolbar.ToolBar
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
@@ -23,7 +20,7 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
         viewModel.width,
         viewModel.height,
 
-        viewModel.layers,
+        viewModel.canvas.layers,
 
         onDrawStart = viewModel::startToolDraw,
         onDraw = viewModel::toolDraw,
@@ -36,9 +33,9 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
         QuickBar(
             modifier = Modifier.align(Alignment.CenterStart),
 
-            currentColor = viewModel.currentColor,
-            colorPalette = viewModel.colorPalette,
-            onColorPick = { viewModel.currentColor = it },
+            currentColor = viewModel.canvas.palette[viewModel.currentColorId],
+            colorPalette = viewModel.canvas.palette,
+            onColorPick = { viewModel.currentColorId = it },
 
             columns = viewModel.expectedQuickBarColumns(),
         )
@@ -61,34 +58,34 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
         LayerBar(
             modifier = Modifier.align(Alignment.TopEnd),
 
-            layers = viewModel.layers,
+            layers = viewModel.canvas.layers,
             currentLayerId = viewModel.currentLayerId,
 
             onLayerSelect = { layerId ->
-                viewModel.changeCurrentLayer(layerId)
+//                viewModel.changeCurrentLayer(layerId)
             },
             onLayerVisibilityToggle = { layerId ->
-                viewModel.toggleLayerVisibility(layerId)
+//                viewModel.toggleLayerVisibility(layerId)
             }
         )
     }
 
-    ConfirmDialog(
-        visible = viewModel.showAlertDialog,
-        options = viewModel.alertOptions,
-        onClose = { viewModel.showAlertDialog = false },
-    )
-    
-    FilePicker(
-        show = viewModel.showFilePicker,
-        fileExtensions = viewModel.filePickerFileExtensions,
-    ) { file ->
-        viewModel.filePickerCallback(file)
-        viewModel.showFilePicker = false
-    }
-
-    DirectoryPicker(viewModel.showDirectoryPicker) { path ->
-        viewModel.directoryPickerCallback(path)
-        viewModel.showDirectoryPicker = false
-    }
+//    ConfirmDialog(
+//        visible = viewModel.showAlertDialog,
+//        options = viewModel.alertOptions,
+//        onClose = { viewModel.showAlertDialog = false },
+//    )
+//
+//    FilePicker(
+//        show = viewModel.showFilePicker,
+//        fileExtensions = viewModel.filePickerFileExtensions,
+//    ) { file ->
+//        viewModel.filePickerCallback(file)
+//        viewModel.showFilePicker = false
+//    }
+//
+//    DirectoryPicker(viewModel.showDirectoryPicker) { path ->
+//        viewModel.directoryPickerCallback(path)
+//        viewModel.showDirectoryPicker = false
+//    }
 }

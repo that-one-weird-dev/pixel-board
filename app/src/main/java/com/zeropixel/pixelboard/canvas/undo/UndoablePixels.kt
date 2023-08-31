@@ -1,6 +1,6 @@
 package com.zeropixel.pixelboard.canvas.undo
 
-import androidx.compose.ui.graphics.Color
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class UndoablePixels(
@@ -11,7 +11,7 @@ class UndoablePixels(
     data class UndoPixel(
         val x: Int,
         val y: Int,
-        val color: Color,
+        val color: ColorInt,
     ) {
         override fun hashCode(): Int {
             return x and y
@@ -30,10 +30,8 @@ class UndoablePixels(
     }
 
     override fun CanvasViewModel.undo() {
-        layers.getOrNull(layerId)?.let { layer ->
-            pixels.forEach { pixel ->
-                layer.bitmap.setPixel(pixel.x, pixel.y, pixel.color)
-            }
+        pixels.forEach { pixel ->
+            canvas.setPixel(layerId, pixel.x, pixel.y, pixel.color)
         }
     }
 }

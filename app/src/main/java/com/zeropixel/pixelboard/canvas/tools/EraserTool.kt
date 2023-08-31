@@ -2,7 +2,6 @@ package com.zeropixel.pixelboard.canvas.tools
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.zeropixel.pixelboard.R
@@ -34,9 +33,9 @@ class EraserTool : Tool {
 
     override fun CanvasViewModel.draw(x: Int, y: Int) {
         DrawUtils.circle(x, y, size / 2f) { xPos, yPos ->
-            val oldColor = currentLayer.bitmap.setPixel(xPos, yPos, Color.Transparent)
+            val oldColor = canvas.setPixel(currentLayerId, xPos, yPos, 0x00000000)
 
-            undoableBuilder.addPixel(xPos, yPos, Color(oldColor))
+            undoableBuilder.addPixel(xPos, yPos, oldColor)
         }
     }
 

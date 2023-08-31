@@ -1,11 +1,11 @@
 package com.zeropixel.pixelboard.canvas.undo
 
-import androidx.compose.ui.graphics.Color
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 
 class UndoablePixelsBuilder {
     private var pixels = mutableSetOf<UndoablePixels.UndoPixel>()
 
-    fun addPixel(x: Int, y: Int, color: Color): UndoablePixelsBuilder {
+    fun addPixel(x: Int, y: Int, color: ColorInt): UndoablePixelsBuilder {
         pixels.add(UndoablePixels.UndoPixel(x, y, color))
 
         return this

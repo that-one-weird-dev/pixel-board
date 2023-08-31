@@ -1,54 +1,48 @@
 package com.zeropixel.pixelboard.canvas
 
 import android.graphics.Bitmap
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.get
-
-private const val CIRCLE_RADIUS_ERROR = .1
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 
 class LayerBitmap(
-    val width: Int,
-    val height: Int,
-    val backgroundColor: Color = Color.Transparent
+    private val width: Int,
+    private val height: Int,
+    fillColor: ColorInt = 0x00000000,
 ) {
 
     private val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888, false)
 
     init {
-        clearPixels()
+        fillPixels(fillColor)
     }
 
-    fun clearPixels() {
-        repeat(width) { x ->
-            repeat(height) { y ->
-                setPixel(x, y, backgroundColor)
-            }
-        }
-    }
-
-    /**
-     * @return old color
-     */
-    fun setPixel(x: Int, y: Int, color: Color): Int {
-        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return color.toArgb()
+    fun setPixel(x: Int, y: Int, color: ColorInt): ColorInt {
+        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return color
 
         val oldColor = bitmap[x, y]
 
-        bitmap.setPixel(x, y, color.toArgb())
+        bitmap.setPixel(x, y, color)
 
         return oldColor
     }
 
-    fun getColor(x: Int, y: Int): Color? {
-        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return null
+    fun getPixel(x: Int, y: Int): ColorInt {
+        if (x < 0 || x >= bitmap.width || y < 0 || y >= bitmap.height) return 0x00000000
 
-        return Color(bitmap.getPixel(x, y))
+        return bitmap.getPixel(x, y)
     }
 
     fun asImageBitmap(): ImageBitmap = bitmap.asImageBitmap()
+
+    private fun fillPixels(color: ColorInt) {
+        repeat(width) { x ->
+            repeat(height) { y ->
+                setPixel(x, y, color)
+            }
+        }
+    }
 
     companion object {
         fun backgroundGrid(width: Int, height: Int, cellSize: Int): LayerBitmap {
@@ -60,9 +54,9 @@ class LayerBitmap(
                     val isDarkCellVertically = y / cellSize == 0
 
                     val color = if (isDarkCellHorizontally == isDarkCellVertically) {
-                        Color(0xffcacacc)
+                        0xffcacacc.toInt()
                     } else {
-                        Color(0xfffdfdfd)
+                        0xfffdfdfd.toInt()
                     }
 
                     bitmap.setPixel(x, y, color)

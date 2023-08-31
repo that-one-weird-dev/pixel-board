@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.zeropixel.pixelboard.canvas.undo.UndoablePixelsBuilder
 import com.zeropixel.pixelboard.canvas.utils.DrawUtils
@@ -34,9 +33,10 @@ class PenTool : Tool {
 
     override fun CanvasViewModel.draw(x: Int, y: Int) {
         DrawUtils.circle(x, y, size / 2f) { xPos, yPos ->
-            val oldColor = currentLayer.bitmap.setPixel(xPos, yPos, currentColor)
+            val oldColor =
+                canvas.setPixel(currentLayerId, xPos, yPos, canvas.palette[currentColorId])
 
-            undoableBuilder.addPixel(xPos, yPos, Color(oldColor))
+            undoableBuilder.addPixel(xPos, yPos, oldColor)
         }
     }
 

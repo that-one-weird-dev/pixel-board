@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.zeropixel.pixelboard.canvas.palette.ColorPalette
 import com.zeropixel.pixelboard.ui.screens.CanvasScreen
 import com.zeropixel.pixelboard.views.CanvasViewModel
 import com.zeropixel.pixelboard.views.CanvasViewModelFactory
@@ -23,11 +24,10 @@ class MainActivity : ComponentActivity() {
             val colorScheme = dynamicDarkColorScheme(LocalContext.current)
 
             MaterialTheme(colorScheme = colorScheme) {
-                val canvasViewModel =
-                    viewModel<CanvasViewModel>(factory = CanvasViewModelFactory(32, 32))
-
                 val image = ImageBitmap.imageResource(id = R.drawable.apollo)
-                canvasViewModel.loadPalette(image)
+
+                val canvasViewModel =
+                    viewModel<CanvasViewModel>(factory = CanvasViewModelFactory(32, 32, ColorPalette.fromBitmap(image)))
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),

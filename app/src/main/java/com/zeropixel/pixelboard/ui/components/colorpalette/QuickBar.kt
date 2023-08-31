@@ -6,16 +6,18 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.zeropixel.pixelboard.canvas.palette.ColorPalette
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
+import com.zeropixel.pixelboard.ui.components.colorpalette.ColorPalette as ColorPaletteComponent
 
 @Composable
 fun QuickBar(
     modifier: Modifier = Modifier,
 
-    currentColor: Color,
-    colorPalette: List<Color>,
-    onColorPick: (Color) -> Unit,
+    currentColor: ColorInt,
+    colorPalette: ColorPalette,
+    onColorPick: (ColorInt) -> Unit,
 
     columns: Int = 1,
 ) {
@@ -27,7 +29,7 @@ fun QuickBar(
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors()
     ) {
-        ColorPalette(
+        ColorPaletteComponent(
             modifier = Modifier
                 .padding(10.dp)
                 .width(width),

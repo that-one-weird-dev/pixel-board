@@ -3,9 +3,9 @@ package com.zeropixel.pixelboard.canvas.tools
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.zeropixel.pixelboard.canvas.undo.UndoablePixelsBuilder
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 import com.zeropixel.pixelboard.views.CanvasViewModel
 
 class FillTool : Tool {
@@ -14,7 +14,8 @@ class FillTool : Tool {
     private val undoableBuilder = UndoablePixelsBuilder()
 
     override fun CanvasViewModel.drawStart(x: Int, y: Int) {
-        val overriddenColor = currentLayer.bitmap.getColor(x, y) ?: return
+        val currentColor = canvas.palette[currentColorId]
+        val overriddenColor = canvas.getPixel(currentLayerId, x, y)
         if (overriddenColor == currentColor) return
 
         fill(x, y, overriddenColor)
@@ -25,11 +26,15 @@ class FillTool : Tool {
     @Composable
     override fun icon(): ImageVector = Icons.Default.Place
 
-    private fun CanvasViewModel.fill(x: Int, y: Int, overriddenColor: Color) {
-        val color = currentLayer.bitmap.getColor(x, y) ?: return
+    private fun CanvasViewModel.fill(x: Int, y: Int, overriddenColor: ColorInt) {
+        if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return
+
+        val color = canvas.getPixel(currentLayerId, x, y)
         if (color != overriddenColor) return
 
-        currentLayer.bitmap.setPixel(x, y, currentColor)
+        val currentColor = canvas.palette[currentColorId]
+
+        canvas.setPixel(currentLayerId, x, y, currentColor)
 
         undoableBuilder.addPixel(x, y, color)
 
