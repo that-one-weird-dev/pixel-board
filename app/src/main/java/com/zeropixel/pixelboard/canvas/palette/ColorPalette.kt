@@ -3,18 +3,15 @@ package com.zeropixel.pixelboard.canvas.palette
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
+import com.zeropixel.pixelboard.canvas.utils.ColorInt
 
 class ColorPalette(
-    val colors: List<Int> = listOf(0x00000000),
+    val colors: List<ColorInt> = listOf(),
 ) {
-    init {
-        if (colors.isEmpty()) throw IllegalArgumentException("Colors must have at least one argument")
-    }
-
     val size
         get() = colors.size
 
-    operator fun get(index: Int): Int {
+    operator fun get(index: Int): ColorInt {
         return colors[index]
     }
 
@@ -22,7 +19,7 @@ class ColorPalette(
         fun fromBitmap(bitmap: ImageBitmap): ColorPalette {
             val pixels = bitmap.toPixelMap()
 
-            val colors = mutableSetOf(0x00000000)
+            val colors = mutableSetOf<ColorInt>()
 
             repeat(pixels.width) { x ->
                 repeat(pixels.height) { y ->
