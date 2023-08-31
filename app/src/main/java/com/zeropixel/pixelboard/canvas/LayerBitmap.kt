@@ -7,8 +7,8 @@ import androidx.core.graphics.get
 import com.zeropixel.pixelboard.canvas.utils.ColorInt
 
 class LayerBitmap(
-    private val width: Int,
-    private val height: Int,
+    val width: Int,
+    val height: Int,
     fillColor: ColorInt = 0x00000000,
 ) {
 

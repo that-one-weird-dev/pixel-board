@@ -17,8 +17,8 @@ import com.zeropixel.pixelboard.views.CanvasViewModel
 fun CanvasScreen(viewModel: CanvasViewModel) {
 
     PixelCanvas(
-        viewModel.width,
-        viewModel.height,
+        viewModel.canvas.width,
+        viewModel.canvas.height,
 
         viewModel.canvas.layers,
 

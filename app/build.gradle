@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.22'
 }
 
 android {
@@ -59,6 +60,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
     implementation "io.coil-kt:coil-compose:2.4.0"
     implementation "com.darkrockstudios:mpfilepicker:1.2.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 
     testImplementation 'junit:junit:4.13.2'
 
