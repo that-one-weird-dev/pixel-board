@@ -1,6 +1,7 @@
 package com.zeropixel.pixelboard.ui.components.colorpalette
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,11 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.palette.ColorPalette
 import com.zeropixel.pixelboard.canvas.utils.ColorInt
@@ -38,20 +38,8 @@ fun ColorPalette(
         itemsIndexed(palette.colors) { i, color ->
             val isSelected = color == currentColor
 
-            val topLeftCorner = if (i == 0) 10.dp else 5.dp
-            val topRightCorner = if (i == columns - 1) 10.dp else 5.dp
-            val bottomLeftCorner = if (i == palette.size - 1 - (columns - 1)) 10.dp else 5.dp
-            val bottomRightCorner = if (i == palette.size - 1) 10.dp else 5.dp
-
-            val shape = RoundedCornerShape(
-                topLeftCorner,
-                topRightCorner,
-                bottomRightCorner,
-                bottomLeftCorner,
-            )
-
             Color(
-                Modifier.clip(shape),
+                Modifier,
                 isSelected,
                 color,
                 onClick = { onColorPick(i) }
@@ -75,7 +63,8 @@ private fun Color(
             .scale(scale)
             .then(modifier)
             .aspectRatio(1f)
-            .background(androidx.compose.ui.graphics.Color(color))
+            .background(Color(color))
             .clickable(onClick = onClick)
+            .border(1.dp, Color.Black)
     )
 }

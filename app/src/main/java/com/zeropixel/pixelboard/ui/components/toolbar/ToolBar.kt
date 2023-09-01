@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.tools.Tool
 import com.zeropixel.pixelboard.ui.components.IconPalette
+import com.zeropixel.pixelboard.ui.components.shared.Panel
 
 @Composable
 fun ToolBar(
@@ -21,7 +21,7 @@ fun ToolBar(
     toolPalette: List<Tool>,
     onToolPick: (Tool) -> Unit,
 ) {
-    ElevatedCard(
+    Panel(
         modifier = modifier
             .width(300.dp),
     ) {
@@ -36,7 +36,7 @@ fun ToolBar(
                 onSelect = onToolPick,
             )
             currentTool.configuration?.let { configuration ->
-                Divider(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Divider(color = Color.Black, thickness = 2.dp)
                 Column {
                     configuration()
                 }

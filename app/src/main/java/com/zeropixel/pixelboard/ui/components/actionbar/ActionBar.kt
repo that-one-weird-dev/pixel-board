@@ -1,12 +1,12 @@
 package com.zeropixel.pixelboard.ui.components.actionbar
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.actions.Action
 import com.zeropixel.pixelboard.ui.components.IconPalette
+import com.zeropixel.pixelboard.ui.components.shared.Panel
 
 @Composable
 fun ActionBar(
@@ -14,7 +14,7 @@ fun ActionBar(
     actionPalette: List<Action>,
     onActionPick: (Action) -> Unit,
 ) {
-    ElevatedCard(
+    Panel(
         modifier = modifier,
     ) {
         IconPalette(

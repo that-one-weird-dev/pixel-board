@@ -1,5 +1,6 @@
 package com.zeropixel.pixelboard.ui.components.layerbar
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,14 +15,16 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.zeropixel.pixelboard.canvas.Layer
+import com.zeropixel.pixelboard.ui.components.shared.Panel
 
 @Composable
 fun LayerBar(
@@ -35,7 +38,7 @@ fun LayerBar(
     /// Used for re-rendering the component when needed
     @Suppress("UNUSED_PARAMETER") rerender: Boolean = false,
 ) {
-    ElevatedCard(
+    Panel(
         modifier = modifier,
     ) {
         LazyColumn(
@@ -77,7 +80,9 @@ private fun LayerCard(
             .width(200.dp),
 
         onClick = onSelect,
-        colors = ButtonDefaults.buttonColors(color, onColor),
+        colors = ButtonDefaults.buttonColors(color),
+        shape = RectangleShape,
+        border = BorderStroke(2.dp, Color.Black),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
