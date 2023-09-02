@@ -123,36 +123,40 @@ fun PixelCanvas(
                 }
                 .onGloballyPositioned { coordinates = it }
                 .aspectRatio(1f)
-                .shadow(20.dp)
-                .border(2.dp, Color.Black)
-                .padding(2.dp),
+                .shadow(20.dp),
         ) {
-            val backgroundBitmap = LayerBitmap.backgroundGrid(
-                width = width,
-                height = height,
-                cellSize = 16,
-            )
-            Image(
-                modifier = Modifier.fillMaxSize(),
+            Box(
+                modifier = Modifier
+                    .border(2.dp, Color.Black)
+                    .padding(2.dp)
+            ) {
+                val backgroundBitmap = LayerBitmap.backgroundGrid(
+                    width = width,
+                    height = height,
+                    cellSize = 16,
+                )
+                Image(
+                    modifier = Modifier.fillMaxSize(),
 
-                painter = BitmapPainter(
-                    image = backgroundBitmap.asImageBitmap(),
-                    filterQuality = FilterQuality.None,
-                ),
-                contentDescription = "Background"
-            )
+                    painter = BitmapPainter(
+                        image = backgroundBitmap.asImageBitmap(),
+                        filterQuality = FilterQuality.None,
+                    ),
+                    contentDescription = "Background"
+                )
 
-            layers.forEach { layer ->
-                if (layer.visible) {
-                    Image(
-                        modifier = Modifier.fillMaxSize(),
+                layers.forEach { layer ->
+                    if (layer.visible) {
+                        Image(
+                            modifier = Modifier.fillMaxSize(),
 
-                        painter = BitmapPainter(
-                            image = layer.bitmap.asImageBitmap(),
-                            filterQuality = FilterQuality.None,
-                        ),
-                        contentDescription = "Canvas",
-                    )
+                            painter = BitmapPainter(
+                                image = layer.bitmap.asImageBitmap(),
+                                filterQuality = FilterQuality.None,
+                            ),
+                            contentDescription = "Canvas",
+                        )
+                    }
                 }
             }
         }
