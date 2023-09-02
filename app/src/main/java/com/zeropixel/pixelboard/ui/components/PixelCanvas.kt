@@ -2,7 +2,6 @@ package com.zeropixel.pixelboard.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -16,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -114,16 +112,20 @@ fun PixelCanvas(
                     rotationZ = rotation
                 }
                 .pointerInput(Unit) {
-                    detectDragGestures(onDrag = ::onDrag, onDragStart = ::onDragStart, onDragEnd = ::onDragEnd)
+                    detectDragGestures(
+                        onDrag = ::onDrag,
+                        onDragStart = ::onDragStart,
+                        onDragEnd = ::onDragEnd
+                    )
                 }
                 .pointerInput(Unit) {
                     detectTapGestures(onTap = ::onTap)
                 }
                 .onGloballyPositioned { coordinates = it }
                 .aspectRatio(1f)
-                .shadow(10.dp)
-                .border(1.dp, MaterialTheme.colorScheme.onBackground)
-                .background(Color.White),
+                .shadow(20.dp)
+                .border(2.dp, Color.Black)
+                .padding(2.dp),
         ) {
             val backgroundBitmap = LayerBitmap.backgroundGrid(
                 width = width,
