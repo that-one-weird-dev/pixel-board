@@ -31,6 +31,7 @@ class CanvasViewModel(
     private val undoStack = mutableListOf<Undoable>()
 
     var rerenderCanvasState by mutableStateOf(false)
+    var rerenderLayersState by mutableStateOf(false)
 
     fun executeAction(action: Action) {
         with(action) {
@@ -85,6 +86,13 @@ class CanvasViewModel(
         return true
     }
 
+    fun toggleLayerVisibility(layerId: LayerId) {
+        canvas.layers[layerId].visible = !canvas.layers[layerId].visible
+
+        rerenderCanvas()
+        rerenderLayers()
+    }
+
     fun expectedQuickBarColumns(): Int = (canvas.palette.size - 1) / 8 + 1
 
     private fun saveToFile() {
@@ -93,5 +101,9 @@ class CanvasViewModel(
 
     private fun rerenderCanvas() {
         rerenderCanvasState = !rerenderCanvasState
+    }
+
+    private fun rerenderLayers() {
+        rerenderLayersState = !rerenderLayersState
     }
 }

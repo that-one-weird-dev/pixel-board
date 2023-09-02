@@ -62,11 +62,13 @@ fun CanvasScreen(viewModel: CanvasViewModel) {
             currentLayerId = viewModel.currentLayerId,
 
             onLayerSelect = { layerId ->
-//                viewModel.changeCurrentLayer(layerId)
+                viewModel.currentLayerId = layerId
             },
             onLayerVisibilityToggle = { layerId ->
-//                viewModel.toggleLayerVisibility(layerId)
-            }
+                viewModel.toggleLayerVisibility(layerId)
+            },
+
+            rerender = viewModel.rerenderLayersState,
         )
     }
 

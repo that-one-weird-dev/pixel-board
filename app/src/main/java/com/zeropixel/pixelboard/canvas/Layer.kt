@@ -2,7 +2,7 @@ package com.zeropixel.pixelboard.canvas
 
 class Layer(
     val bitmap: LayerBitmap,
-    val visible: Boolean = true,
+    var visible: Boolean = true,
     val name: String = "Default",
 ) {
     constructor(
