@@ -4,99 +4,88 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.zeropixel.pixelboard.canvas.Canvas
-import com.zeropixel.pixelboard.canvas.actions.Action
-import com.zeropixel.pixelboard.canvas.actions.ClearAction
-import com.zeropixel.pixelboard.canvas.actions.UndoAction
-import com.zeropixel.pixelboard.canvas.serialization.saveCanvas
-import com.zeropixel.pixelboard.canvas.tools.EraserTool
-import com.zeropixel.pixelboard.canvas.tools.FillTool
-import com.zeropixel.pixelboard.canvas.tools.PenTool
-import com.zeropixel.pixelboard.canvas.undo.Undoable
-import com.zeropixel.pixelboard.canvas.utils.ColorId
-import com.zeropixel.pixelboard.canvas.utils.LayerId
+import com.zeropixel.engine.Engine
+import com.zeropixel.engine.actions.ClearAction
+import com.zeropixel.engine.actions.UndoAction
+import com.zeropixel.engine.serialization.saveEngine
+import com.zeropixel.engine.tools.EraserTool
+import com.zeropixel.engine.tools.FillTool
+import com.zeropixel.engine.tools.PenTool
+import com.zeropixel.engine.utils.ColorId
+import com.zeropixel.engine.utils.LayerId
+import com.zeropixel.pixelboard.components.actions.clearActionIcon
+import com.zeropixel.pixelboard.components.actions.undoActionIcon
+import com.zeropixel.pixelboard.components.tools.eraserToolConfiguration
+import com.zeropixel.pixelboard.components.tools.eraserToolIcon
+import com.zeropixel.pixelboard.components.tools.fillToolIcon
+import com.zeropixel.pixelboard.components.tools.penToolConfiguration
+import com.zeropixel.pixelboard.components.tools.penToolIcon
+import com.zeropixel.pixelboard.utils.ComposableAction
+import com.zeropixel.pixelboard.utils.ComposableTool
 
 class CanvasViewModel(
-    val canvas: Canvas,
+    val engine: Engine,
     private val filesDir: String,
 ) : ViewModel() {
     var currentLayerId by mutableStateOf<LayerId>(0)
     var currentColorId by mutableStateOf<ColorId>(0)
 
-    val toolPalette = listOf(PenTool(), EraserTool(), FillTool())
-    var currentTool by mutableStateOf(toolPalette.firstOrNull() ?: PenTool())
+    val toolPalette = listOf(
+        ComposableTool(PenTool(engine), penToolIcon, penToolConfiguration),
+        ComposableTool(EraserTool(engine), eraserToolIcon, eraserToolConfiguration),
+        ComposableTool(FillTool(engine), fillToolIcon),
+    )
+    var currentTool by mutableStateOf(toolPalette.first())
 
-    val actionPalette = listOf(ClearAction(), UndoAction())
-
-    private val undoStack = mutableListOf<Undoable>()
+    val actionPalette = listOf(
+        ComposableAction(ClearAction(engine), clearActionIcon),
+        ComposableAction(UndoAction(engine), undoActionIcon),
+    )
 
     var rerenderCanvasState by mutableStateOf(false)
     var rerenderLayersState by mutableStateOf(false)
 
-    fun executeAction(action: Action) {
-        with(action) {
-            execute()
-        }
+    fun executeAction(action: ComposableAction<*>) {
+        action.action.execute()
 
         saveToFile()
     }
 
     fun startToolDraw(x: Int, y: Int) {
-        if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return
+        if (x < 0 || x >= engine.canvas.width || y < 0 || y >= engine.canvas.height) return
 
-        with(currentTool) {
-            drawStart(x, y)
-        }
+        currentTool.tool.drawStart(x, y)
 
         rerenderCanvas()
     }
 
     fun toolDraw(x: Int, y: Int) {
-        if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return
+        if (x < 0 || x >= engine.canvas.width || y < 0 || y >= engine.canvas.height) return
 
-        with(currentTool) {
-            draw(x, y)
-        }
+        currentTool.tool.draw(x, y)
 
         rerenderCanvas()
     }
 
     fun endToolDraw() {
-        with(currentTool) {
-            drawEnd()
-        }
+        currentTool.tool.drawEnd()
 
         rerenderCanvas()
 
         saveToFile()
     }
 
-    fun pushUndoable(undoable: Undoable) {
-        undoStack.add(undoable)
-    }
-
-    fun popUndoableAndUndo(): Boolean {
-        val undoable = undoStack.lastOrNull() ?: return false
-        undoStack.remove(undoable)
-
-        with(undoable) {
-            undo()
-        }
-
-        return true
-    }
-
     fun toggleLayerVisibility(layerId: LayerId) {
-        canvas.layers[layerId].visible = !canvas.layers[layerId].visible
+        engine.canvas[layerId].visible = !engine.canvas[layerId].visible
 
         rerenderCanvas()
         rerenderLayers()
     }
 
-    fun expectedQuickBarColumns(): Int = (canvas.palette.size - 1) / 8 + 1
+    fun expectedQuickBarColumns(): Int = (engine.palette.size - 1) / 8 + 1
 
     private fun saveToFile() {
-        saveCanvas(filesDir, "default", canvas)
+        saveEngine(filesDir, "default", engine)
     }
 
     private fun rerenderCanvas() {
